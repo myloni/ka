@@ -1,0 +1,390 @@
+/* Snackbar */
+var createSnackbar = function() {
+    var a = null;
+    return function(b, c, d, e, ttl, hide) {
+        if (typeof(hide) != 'undefined' && hide == true) {
+            /* hide it */
+            a && a.dismiss();
+            var f = document.createElement("div");
+            f.className = "paper-snackbar", f.dismiss = function() {
+                this.style.opacity = "0";
+                this.style.bottom = "-100px";
+            };
+        } else {
+            a && a.dismiss();
+            var f = document.createElement("div");
+            f.className = "paper-snackbar", f.dismiss = function() {
+                this.style.opacity = "0";
+                this.style.bottom = "-100px";
+            };
+            var g = document.createTextNode(b);
+            if (f.appendChild(g), c) {
+                e || (e = f.dismiss.bind(f));
+                var h = document.createElement("button");
+                h.className = d, h.innerHTML = c, h.addEventListener("click", e), f.appendChild(h)
+            }
+            if (ttl == 'fast') {
+                setTimeout(function() {
+                    a === this && a.dismiss()
+                }.bind(f), 3e3), f.addEventListener("transitionend", function(b, c) {
+                    "opacity" === b.propertyName && 0 == this.style.opacity && (this.parentElement.removeChild(this), a === this && (a = null))
+                }.bind(f)), a = f, document.body.appendChild(f), getComputedStyle(f).bottom, f.style.bottom = "0px", f.style.opacity = 1
+            } else if (ttl == 'slow') {
+                setTimeout(function() {
+                    a === this && a.dismiss()
+                }.bind(f), 8e3), f.addEventListener("transitionend", function(b, c) {
+                    "opacity" === b.propertyName && 0 == this.style.opacity && (this.parentElement.removeChild(this), a === this && (a = null))
+                }.bind(f)), a = f, document.body.appendChild(f), getComputedStyle(f).bottom, f.style.bottom = "0px", f.style.opacity = 1
+            } else if (ttl == 'very-slow') {
+                setTimeout(function() {
+                    a === this && a.dismiss()
+                }.bind(f), 60e3), f.addEventListener("transitionend", function(b, c) {
+                    "opacity" === b.propertyName && 0 == this.style.opacity && (this.parentElement.removeChild(this), a === this && (a = null))
+                }.bind(f)), a = f, document.body.appendChild(f), getComputedStyle(f).bottom, f.style.bottom = "0px", f.style.opacity = 1
+            } else {
+                setTimeout(function() {
+                    a === this && a.dismiss()
+                }.bind(f), 5e3), f.addEventListener("transitionend", function(b, c) {
+                    "opacity" === b.propertyName && 0 == this.style.opacity && (this.parentElement.removeChild(this), a === this && (a = null))
+                }.bind(f)), a = f, document.body.appendChild(f), getComputedStyle(f).bottom, f.style.bottom = "0px", f.style.opacity = 1
+            }
+        }
+
+    }
+}();
+
+// Angular App
+let IPTVAppSite = angular.module('IPTVAppSite', []);
+
+IPTVAppSite.filter('subMonthDetector', function() {
+    return function(sub) {
+        if (sub == 1 || sub == '1') {
+            return '1 Month';
+        } else if (sub == 12 || sub == '12') {
+            return '1 Year';
+        } else {
+            return sub + ' Months';
+        }
+    }
+});
+
+IPTVAppSite.filter('channel_type_name', function() {
+    return function(type) {
+        if (type == 'stream') {
+            return 'Live';
+        } else if (type == 'vod') {
+            return 'Movies';
+        } else if (type == 'series') {
+            return 'Series';
+        } else {
+            return '';
+        }
+    }
+});
+
+function _json(data) {
+    data = data.replace('}0', '}');
+    return JSON.parse(data);
+}
+
+function req($http, method, body, callback) {
+    $http({
+            method: method,
+            url: ajaxurl,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest: function(obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: body
+        }).then(function(response) {
+            return callback(null, _json(response.data));
+        })
+        .catch(function(error) {
+            return callback({ status: false, msg: "An unexpected error has occurred! please try again." }, null);
+        });
+}
+
+function normalPackages(list){
+    if (list.length) {
+        let newArr = [];
+        for (var i = 0; i < list.length; i++) {
+            if (list[i]['device_id'] == '' || list[i]['device_id'] == null) {
+                newArr.push(list[i])
+            }
+            if (i == list.length - 1) {
+                return newArr;
+            }
+        }
+    }else{
+        return [];
+    }    
+}
+
+function devicePackages(list){
+    if (list.length) {
+        let newArr = [];
+        for (var i = 0; i < list.length; i++) {
+            if (list[i]['device_id'] != '' && list[i]['device_id'] != null) {
+                newArr.push(list[i])
+            }
+            if (i == list.length - 1) {
+                return newArr;
+            }
+        }
+    }else{
+        return [];
+    }  
+}
+
+function trueOrFalse(status){
+    if (status == 1 || status == '1' || status == true || status == 'true') {
+        return true;
+    }else{
+        return false;
+    }
+}
+
+IPTVAppSite.controller('packagesCtrl', function($scope, $http, $location, $rootScope, $window) {
+    $scope.packages = [];
+    $scope.normal_packages = [];
+    $scope.device_packages = [];
+    $scope.currency = {};
+
+    // load packages
+    req($http, 'POST', { 'action': 'my_action', 'type': 'load_packages' }, function(err, result) {
+        if (err) {
+            createSnackbar(err.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+        } else if (result && result.status == false) {
+            createSnackbar(result.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+        } else {
+            createSnackbar('', '', '', '', 'slow', true);
+            $scope.packages = _json(result.packages);
+            if (trueOrFalse(result.normal_packages_show) == true) {
+                $scope.show_only_packages = true;
+                $scope.normal_packages = normalPackages( _json( result.packages ) );
+            }else{
+                $scope.show_only_packages = false;
+                $scope.normal_packages = [];
+            }
+
+            if (trueOrFalse(result.device_packages_show) == true) {
+                $scope.show_devices = true;
+                $scope.device_packages = devicePackages( _json( result.packages ) );
+            }else{
+                $scope.show_devices = false;
+                $scope.device_packages = [];
+            }
+            
+            
+            $scope.currency = _json(result.currency);
+        }
+    });
+
+});
+
+////////////////////////////////////////////////////////////
+///////////////// Cannels Controller  //////////////
+IPTVAppSite.controller('channelsCtrl', function($scope, $http, $location, $rootScope, $window, $timeout) {
+    // load channel categories
+    req($http, 'POST', { 'action': 'my_action', 'type': 'load_channels_cats' }, function(err, result) {
+        if (!err && result && result.status == true) {
+            $scope.channel_cats = _json(result.cats);
+        }
+    });
+
+    // Load channels list
+    $scope.loadChannels = function(from, total, cat, sort, arrow) {
+        $scope.channel_list = [];
+        $scope.channel_meta = {};
+        $scope.show_pagination = true;
+        $scope.currentPage = parseInt($scope.from / $scope.total) + 1;
+        createSnackbar('Loading ', '<span class="loading-snackbar"></span>', 'action', '', 'very-slow');
+        $scope.loadingCover = true;
+        req($http, 'POST', { action: 'my_action', type: 'load_channels_list', from: from, total: total, cat: cat, sort: sort, arrow: arrow }, function(err, result) {
+            if (err) {
+                $scope.loadingCover = false;
+                createSnackbar(err.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+            } else if (result && result.status == false) {
+                $scope.loadingCover = false;
+                createSnackbar(result.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+            } else {
+                $scope.loadingCover = false;
+                createSnackbar('', '', '', '', 'slow', true);
+                $scope.channel_list = result.channels;
+                $scope.channel_meta = result.meta;
+            }
+        });
+    };
+
+    $scope.constructChannels = function(){
+        $scope.from = 0;
+        $scope.total = 10;
+        $scope.cat = 'all_categories';
+        $scope.sort = 'category';
+        $scope.arrow = 1;
+        $scope.search = '';
+        $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+    }
+
+    $timeout(function() {
+        $scope.constructChannels();
+    }, 500);
+
+    $scope.nextPage = function() {
+        $scope.search = '';
+        $scope.from = parseInt($scope.from) + parseInt($scope.total);
+        $timeout(function() {
+            $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+        }, 100);
+
+    }
+
+    $scope.prevPage = function() {
+        $scope.search = '';
+        if (parseInt($scope.from) - parseInt($scope.total) <= 0) {
+            $scope.from = 0;
+        } else {
+            $scope.from = parseInt($scope.from) - parseInt($scope.total);
+        }
+
+        $timeout(function() {
+            $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+        }, 100);
+    }
+
+    $scope.gotToPage = function(page) {
+        $scope.search = '';
+        $scope.from = parseInt(page * $scope.total);
+        $timeout(function() {
+            $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+        }, 100);
+    }
+
+    $scope.sortList = function(sort) {
+        $scope.search = '';
+        $scope.sort = sort;
+        if ($scope.arrow == 1) {
+            $scope.arrow = -1;
+        } else {
+            $scope.arrow = 1;
+        }
+        $timeout(function() {
+            $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+        }, 100);
+    }
+
+    // Load channels list
+    $scope.searchChannel = function(search) {
+        if (search.length > 2) {
+            $scope.channel_list = [];
+            $scope.channel_meta = {};
+            $scope.show_pagination = false;
+            $scope.from = 0;
+            $scope.total = 10;
+            $scope.cat = 'all_categories';
+            $scope.sort = 'category';
+            $scope.arrow = 1;
+            createSnackbar('Searchig ', '<span class="loading-snackbar"></span>', 'action', '', 'very-slow');
+            $scope.loadingCover = true;
+            req($http, 'POST', { action: 'my_action', type: 'search_in_channels', search: search }, function(err, result) {
+                if (err) {
+                    $scope.loadingCover = false;
+                    createSnackbar(err.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+                } else if (result && result.status == false) {
+                    $scope.loadingCover = false;
+                    createSnackbar(result.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+                } else {
+                    $scope.loadingCover = false;
+                    createSnackbar('', '', '', '', 'slow', true);
+                    $scope.channel_list = result.channels;
+                }
+            });
+        } else {
+            createSnackbar('Type more please!', '<i class="material-icons">warning</i>', 'action snack-orange', '', 'slow');
+        }
+    };
+
+    $scope.resetSearch = function(){
+        $scope.constructChannels();
+    }
+
+    $scope.filterByCategory = function(cat_id) {
+        $scope.cat = cat_id;
+        $scope.from = 0;
+        $timeout(function() {
+            $scope.loadChannels($scope.from, $scope.total, $scope.cat, $scope.sort, $scope.arrow);
+        }, 100);
+    }
+
+
+
+})
+
+////////////////////////////////////////////////////////////
+///////////////// Cannels Controller  //////////////
+IPTVAppSite.controller('trialCtrl', function($scope, $http, $location, $rootScope, $window, $timeout) {
+    $scope.showcaptcha = 1;
+    $scope.preCaptcha= true;
+    $scope.preCaptcha= true;
+    $scope.loadingCaptcha= false;
+
+    $scope.loadCapthca = function(){
+        $scope.captcha = '';
+        $scope.showcaptcha = 1;
+        $scope.preCaptcha = false;
+        $scope.loadingCaptcha = true;
+
+        req($http, 'POST', { action: 'my_action', type: 'create_new_captcha' }, function(err, result) {
+             if (result && result.status == false) {
+                $scope.loadCapthca();
+                createSnackbar('Failed to load captcha! Please try again.', '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+            } else {
+                $scope.loadingCaptcha = false;
+                $scope.showcaptcha = 2;
+                $scope.img = result.captcha;
+            }
+        });
+    };
+
+    $scope.disableTrialBtn = false;
+
+    // request trial
+    $scope.trialRequestSubmit = function(email, captcha, form) {
+        if (form.$valid) {
+            createSnackbar('Processing ', '<span class="loading-snackbar"></span>', 'action', '', 'very-slow');
+            $scope.loadingCover = true;
+            req($http, 'POST', { action: 'my_action', type: 'request_trial', email: email, captcha:captcha }, function(err, result) {
+                if (err) {
+                    createSnackbar(err.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+                } else if (result && result.status == false) {
+                    $scope.loadCapthca();
+                    createSnackbar(result.msg, '<i class="material-icons">close</i>', 'action snack-red', '', 'slow');
+                } else {
+                    $scope.loadCapthca();
+                    createSnackbar('', '', '', '', 'slow', true);
+                    $scope.disableTrialBtn = true;
+                    $scope.successfulRequest = true;
+                    $scope.requestResult = result.msg;
+                }
+            });
+        } else {
+            $scope.loadCapthca();
+            createSnackbar('Please enter valid email address!', '<i class="material-icons">warning</i>', 'action snack-orange', '', 'slow');
+        }
+    }
+});
+
+IPTVAppSite.run(function($rootScope, $http) {
+    req($http, 'POST', { action: 'my_action', type: 'load_site_info' }, function(err, result) {
+        if (err) {
+            $rootScope.site_info = [];
+        } else if (result && result.status == false) {
+            $rootScope.site_info = [];
+        } else {
+            $rootScope.site_info = _json(result.info);
+        }
+    });
+});
