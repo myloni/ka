@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игра с Phaser.js</title>
+    <title>My Phaser Game</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <script>
@@ -22,29 +21,29 @@
 
         var game = new Phaser.Game(config);
 
-        var star;
+        var cube;
 
         function preload() {
-            // Загружаем изображение звезды
-            this.load.image('star', 'https://phaser.io/examples/assets/star.png');
+            // Загружаем текстуру для кубика
+            this.load.image('cube', 'https://phaser.io/examples/assets/cube.png');
         }
 
         function create() {
-            // Создаем звезду в центре экрана
-            star = this.add.image(400, 300, 'star');
+            // Создаем кубик в центре экрана
+            cube = this.add.image(400, 300, 'cube');
             
             // Включаем ввод мыши
             this.input.mouse.disableContextMenu();
         }
 
         function update() {
-            // Вычисляем направление от звезды к мыши
-            var angle = Phaser.Math.Angle.Between(star.x, star.y, game.input.x, game.input.y);
+            // Вычисляем направление от кубика к мыши
+            var angle = Phaser.Math.Angle.Between(cube.x, cube.y, game.input.x, game.input.y);
 
-            // Вычисляем новые координаты для звезды, чтобы следовать за мышью
+            // Вычисляем новые координаты для кубика, чтобы следовать за мышью
             var speed = 5;
-            star.x += Math.cos(angle) * speed;
-            star.y += Math.sin(angle) * speed;
+            cube.x += Math.cos(angle) * speed;
+            cube.y += Math.sin(angle) * speed;
         }
     </script>
 </body>
