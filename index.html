@@ -3,48 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Phaser Game</title>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid #000;
+        }
+
+        /* Стили для птицы */
+        .bird {
+            background-color: blue;
+        }
+    </style>
+    <title>Летающий птичий кормушка</title>
 </head>
 <body>
     <script>
-        var config = {
-            type: Phaser.AUTO,
-            width: 800,
-            height: 600,
-            scene: {
-                preload: preload,
-                create: create,
-                update: update
+        var bird = {
+            x: 50,
+            y: 300,
+            width: 30,
+            height: 20,
+            speed: 5,
+            draw: function() {
+                // Отрисовка птицы с учетом стилей
+                context.fillStyle = 'blue';
+                context.fillRect(this.x, this.y, this.width, this.height);
+            },
+            update: function() {
+                this.x += this.speed;
+                if (this.x > canvas.width) {
+                    this.x = -this.width;
+                }
             }
         };
 
-        var game = new Phaser.Game(config);
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 400;
+        document.body.appendChild(canvas);
 
-        var cube;
-
-        function preload() {
-            // Загружаем текстуру для кубика
-            this.load.image('cube', 'https://phaser.io/examples/assets/cube.png');
+        function startGame() {
+            bird.draw();
         }
 
-        function create() {
-            // Создаем кубик в центре экрана
-            cube = this.add.image(400, 300, 'cube');
-            
-            // Включаем ввод мыши
-            this.input.mouse.disableContextMenu();
+        function updateGame() {
+            bird.update();
         }
 
-        function update() {
-            // Вычисляем направление от кубика к мыши
-            var angle = Phaser.Math.Angle.Between(cube.x, cube.y, game.input.x, game.input.y);
-
-            // Вычисляем новые координаты для кубика, чтобы следовать за мышью
-            var speed = 5;
-            cube.x += Math.cos(angle) * speed;
-            cube.y += Math.sin(angle) * speed;
+        function gameLoop() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            updateGame();
+            startGame();
+            requestAnimationFrame(gameLoop);
         }
+
+        gameLoop();
     </script>
 </body>
 </html>
