@@ -1,0 +1,21 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#clicker {
+    padding: 20px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#score {
+    margin-top: 20px;
+    font-size: 18px;
+}
