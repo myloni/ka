@@ -1,5 +1,71 @@
-/* Добавляем стили для звезды */
-#star {
-    width: 40px;
-    height: 40px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid #000;
+        }
+
+        /* Стили для птицы */
+        .bird {
+            background-color: blue;
+        }
+    </style>
+    <title>Летающий птичий кормушка</title>
+</head>
+<body>
+    <script>
+        var bird = {
+            x: 50,
+            y: 300,
+            width: 30,
+            height: 20,
+            speed: 5,
+            draw: function() {
+                // Отрисовка птицы с учетом стилей
+                context.fillStyle = 'blue';
+                context.fillRect(this.x, this.y, this.width, this.height);
+            },
+            update: function() {
+                this.x += this.speed;
+                if (this.x > canvas.width) {
+                    this.x = -this.width;
+                }
+            }
+        };
+
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 400;
+        document.body.appendChild(canvas);
+
+        function startGame() {
+            bird.draw();
+        }
+
+        function updateGame() {
+            bird.update();
+        }
+
+        function gameLoop() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            updateGame();
+            startGame();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
