@@ -1,133 +1,74 @@
-jquery-migrate.min.js?ver=3.4.0:2 JQMIGRATE: Migrate is installed, version 3.4.0
-rapidtvswiss.com/:370     GET data:image/jpeg;base64,{{img}} net::ERR_INVALID_URL
-angular.js:13562     POST https://rapidtvswiss.com/wp-admin/admin-ajax.php 500 (Internal Server Error)
-(anonymous) @ angular.js:13562
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
-angular.js:15567 TypeError: Cannot read properties of null (reading 'captcha')
-    at site_script.js?ver=6.2.2:347:37
-    at site_script.js?ver=6.2.2:106:20
-    at angular.js:17945:37
-    at m.$digest (angular.js:19112:15)
-    at m.$apply (angular.js:19500:13)
-    at k (angular.js:13343:36)
-    at v (angular.js:13600:7)
-    at y.onload (angular.js:13505:9) 'Possibly unhandled rejection: {}'
-(anonymous) @ angular.js:15567
-(anonymous) @ angular.js:11846
-g @ angular.js:17975
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-k @ angular.js:13343
-v @ angular.js:13600
-y.onload @ angular.js:13505
-load (async)
-(anonymous) @ angular.js:13488
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
-angular.js:13562     POST https://rapidtvswiss.com/wp-admin/admin-ajax.php 500 (Internal Server Error)
-(anonymous) @ angular.js:13562
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-k @ angular.js:13343
-v @ angular.js:13600
-y.onload @ angular.js:13505
-load (async)
-(anonymous) @ angular.js:13488
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
-angular.js:15567 TypeError: Cannot read properties of null (reading 'captcha')
-    at site_script.js?ver=6.2.2:347:37
-    at site_script.js?ver=6.2.2:106:20
-    at angular.js:17945:37
-    at m.$digest (angular.js:19112:15)
-    at m.$apply (angular.js:19500:13)
-    at k (angular.js:13343:36)
-    at v (angular.js:13600:7)
-    at y.onload (angular.js:13505:9) 'Possibly unhandled rejection: {}'
-(anonymous) @ angular.js:15567
-(anonymous) @ angular.js:11846
-g @ angular.js:17975
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-k @ angular.js:13343
-v @ angular.js:13600
-y.onload @ angular.js:13505
-load (async)
-(anonymous) @ angular.js:13488
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-k @ angular.js:13343
-v @ angular.js:13600
-y.onload @ angular.js:13505
-load (async)
-(anonymous) @ angular.js:13488
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
-angular.js:13562     POST https://rapidtvswiss.com/wp-admin/admin-ajax.php 500 (Internal Server Error)
-(anonymous) @ angular.js:13562
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
-angular.js:15567 TypeError: Cannot read properties of null (reading 'captcha')
-    at site_script.js?ver=6.2.2:347:37
-    at site_script.js?ver=6.2.2:106:20
-    at angular.js:17945:37
-    at m.$digest (angular.js:19112:15)
-    at m.$apply (angular.js:19500:13)
-    at k (angular.js:13343:36)
-    at v (angular.js:13600:7)
-    at y.onload (angular.js:13505:9) 'Possibly unhandled rejection: {}'
-(anonymous) @ angular.js:15567
-(anonymous) @ angular.js:11846
-g @ angular.js:17975
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-k @ angular.js:13343
-v @ angular.js:13600
-y.onload @ angular.js:13505
-load (async)
-(anonymous) @ angular.js:13488
-s @ angular.js:13288
-(anonymous) @ angular.js:13029
-(anonymous) @ angular.js:17945
-$digest @ angular.js:19112
-$apply @ angular.js:19500
-(anonymous) @ angular.js:28955
-dispatch @ jquery.min.js?ver=3.6.4:2
-y.handle @ jquery.min.js?ver=3.6.4:2
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аркадная игра с Phaser.js</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        var game = new Phaser.Game(config);
+
+        var circle;
+
+        function preload() {
+            // Ничего не загружаем, так как используем графический объект (геометрическая фигура)
+        }
+
+        function create() {
+            // Создаем круг в центре экрана
+            circle = this.add.circle(400, 300, 50, 0x00ff00);
+
+            // Добавляем обработчик события перемещения мыши
+            this.input.on('pointermove', function (pointer) {
+                // Перемещаем круг в противоположную сторону от мыши
+                moveCircleAway(pointer.x, pointer.y);
+            });
+        }
+
+        function update() {
+            // Ваш код для обновления игры будет здесь
+        }
+
+        function moveCircleAway(targetX, targetY) {
+            // Вычисляем направление от круга к цели (мыше)
+            var angle = Phaser.Math.Angle.Between(circle.x, circle.y, targetX, targetY);
+
+            // Вычисляем новые координаты для круга, чтобы убежать от мыши
+            var speed = 5;
+            circle.x += Math.cos(angle) * speed;
+            circle.y += Math.sin(angle) * speed;
+
+            // Если круг выходит за границы экрана, переместим его в случайное место
+            if (circle.x < 0 || circle.x > config.width || circle.y < 0 || circle.y > config.height) {
+                resetCircle();
+            }
+        }
+
+        function resetCircle() {
+            // Перемещаем круг в случайное место экрана
+            circle.x = Phaser.Math.Between(50, config.width - 50);
+            circle.y = Phaser.Math.Between(50, config.height - 50);
+        }
+    </script>
+</body>
+</html>
